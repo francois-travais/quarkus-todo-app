@@ -3,27 +3,16 @@ name: Build
 on: [push, pull_request]
 
 jobs:
-  build_java8:
+  build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java-versions: [8, 11]
     steps:
-    - uses: actions/checkout@v1
-    - name: Install JDK 1.8
-      uses: joschi/setup-jdk@v1.0.0
+    - uses: actions/checkout@v2
+    - name: Install JDK
+      uses: actions/setup-java@v1
       with:
-        java-version: 'openjdk8'
+        java-version: ${{ matrix.java-version }}
     - name: Build with Maven
-      run: mvn -B clean verify -Pnative -Dquarkus.native.container-build=true --file pom.xml
-
-  build_java11:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Install JDK 11
-        uses: joschi/setup-jdk@v1.0.0
-        with:
-          java-version: 'openjdk11'
-      - name: Build with Maven
-        run: mvn -B clean verify -Pnative --file pom.xml -Dquarkus.native.container-build=true -Dquarkus.native.builder-image=quay.io/quarkus/ubi-quarkus-native-image:19.3.1-java11
-
-
-
+      run: mvn -B clean verify -Pnative -Dquarkus.native.container-build=true -Dquarkus.native.builder-image=quay.io/quarkus/ubi-quarkus-native-image:19.3.1-java${{ matrix.java-version }}
