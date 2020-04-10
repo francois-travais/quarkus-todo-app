@@ -1,6 +1,6 @@
 # TODO Application with Quarkus
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/cescoffier/quarkus-todo-app/Build)
+![Build](https://github.com/francois-travais/quarkus-todo-app/workflows/Build/badge.svg)
 
 ## Database
 
